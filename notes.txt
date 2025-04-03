@@ -1,0 +1,13 @@
+pip install chromadb
+pip install pymupdf
+pip install python-docx
+pip install pandas
+pip install pathlib
+pip install ollama
+pip install nltk
+pip install openpyxl
+
+need to run:
+ollama pull mxbai-embed-large
+ollama pull llama3.2
+chroma run --path ./path to wherever db is located
