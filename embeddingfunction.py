@@ -9,6 +9,8 @@ class EmbeddingFunction:
             input = [input]  # Make it a list if it's a single string
         embeddings = []
         for text in input:
-            response = ollama.embed(model="mxbai-embed-large", input=text)
+            response = ollama.embed(model="nomic-embed-text", input=text)
             embeddings.append(response["embeddings"][0])
         return np.array(embeddings)
+    
+    #mxbai-embed-large

@@ -64,7 +64,7 @@ print(filenameThree[-4:])
 # chunks = text_chunker(text, filename)
 # #chunks = format_text_for_vector_db(text, filename, "test")'
 # print(len(chunks))
-# for chunk in chunks:
+# for chunk in chunks: 
 #   print(chunk)
 #   print(embedding_function(chunk))
 #   print("END OF CHUNK\n\n\n\n")
