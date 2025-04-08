@@ -8,7 +8,7 @@ from embeddingfunction import EmbeddingFunction
 from textchunking import sentence_chunking
 from textchunking import text_chunker
 from docx import Document
-
+import json
 
 path = Path("Z:\\Associate Dean Matei\\Fellowship Progress Reporting\\Reports\\")
 filename = "Z:\\Associate Dean Matei\\Fellowship Progress Reporting\\Modified Reports\\final.docx"
@@ -57,7 +57,7 @@ for i, chunk in enumerate(chunks):
     )
 
 context = '''
-The data you will receive will be a list of json objects. 
+You will recieve a list of document chunks with metadata and the answer to a question. 
 It contains in order: the author's name, the year written, the award recieved, the school they are in, question number, and question.
 You will recieve questions that require you to summarize or find a pattern between multiple reports for the same question.
 '''
@@ -65,28 +65,39 @@ queryOne = "who wrote an andrews fellowship report in 2023?"
 queryTwo = "can you summarize the answer to question 6 for Adam Taylor, Noah McKay, Savannah Meier, and Quyn-Anh Nguyen"
 queryThree = "can you summarize question 6 for the 2023 dean's graduate fellowship winners"
 queryFour = "can you summarize James Day's Report"
-queryFive = "can you summarize question 6 for all Ross Fellowship reports"
+queryFive = "can you summarize question 6 for Ross Fellowship reports"
+querySix = "question: 6, year: 2023, award: dean's graduate fellowship"
+querySeven = "how many publications do the ross fellows have?"
 results = collection.query(
     include=["documents", "metadatas", "distances"],
-    query_texts=[queryFive],
-    n_results = 10
+    query_texts=["question:2, award: Ross Fellowship"],
+    n_results = 31
 )
+final = []
 
 for doc in results['documents'][0]:
-    print(doc)
-
+    index = doc.find("questionNumber")
+    #print(doc)
+    if (doc[index + 17] == "2" or doc[index + 16] == "2"):
+        final.append(doc)
+    #print(doc[index + 17])
 print(results["distances"])
-'''
+print(len(final))
+for doc in final:
+    print(doc)
+#data = [json.loads(entry) for entry in results['documents'][0]]
+#print(data)
+
 output = ollama.generate(
     model = "llama3.1:8b",
     prompt = f"""
     {context}
-    Here is the user's question: {queryThree}
-    Here are the data chunks from the database and their associated meta data: {data}
+    Here is the user's question: {querySeven}
+    Here are the relevant documents pulled from the database: {final}
     """
-)
+ )
 
 print(output['response'])
-'''
+
 
 
